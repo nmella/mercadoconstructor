@@ -41,7 +41,7 @@ class YolitoSpider(Spider):
         sku = response.xpath('//span[@itemprop="sku"]/text()').extract_first()
         image = response.xpath('//meta[@property="og:image"]/@content').extract_first()
         manufacturer = response.xpath('//div[@itemprop="brand"]/text()').extract_first()
-        price = response.xpath('//span[@itemprop="price"]/@content').extract_first()
+        price = float(response.xpath('//span[@itemprop="price"]/@content').extract_first())
         images = response.xpath('//img[@onclick="changePhoto(this)"]/@src').extract()[1:]
         category = ' > '.join(response.xpath('//ul[@class="breadcrumb"]//a/span/text()').extract()[1:])
         description = response.xpath('//div[@class="descripcionProductoContainer"]/text()').extract_first()
