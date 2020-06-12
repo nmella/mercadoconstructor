@@ -16,16 +16,8 @@ class YolitoSpider(Spider):
         'Upgrade-Insecure-Requests': '1',
     }
 
-    exchange_rate = ''
-
     def start_requests(self):
-        yield Request('https://www.x-rates.com/calculator/?from=CLP&to=USD&amount=1', callback=self.parse_rate)
-    
-    def parse_rate(self, response):
-        exchange_rate = response.xpath('//span[@class="ccOutputRslt"]/text()').extract_first()
-        self.exchange_rate = float(exchange_rate)
-
-        yield Request(self.start_urls[0], callback=self.parse, headers=self.headers)
+        yield Request(self.start_urls[0], headers=self.headers)
 
     def parse(self, response):
         cat_urls = response.xpath('//div[@class="desktopMenu"]//a/@href').extract()
@@ -50,7 +42,6 @@ class YolitoSpider(Spider):
         image = response.xpath('//meta[@property="og:image"]/@content').extract_first()
         manufacturer = response.xpath('//div[@itemprop="brand"]/text()').extract_first()
         price = response.xpath('//span[@itemprop="price"]/@content').extract_first()
-        price = float(price) * self.exchange_rate
         images = response.xpath('//img[@onclick="changePhoto(this)"]/@src').extract()[1:]
         category = ' > '.join(response.xpath('//ul[@class="breadcrumb"]//a/span/text()').extract()[1:])
         description = response.xpath('//div[@class="descripcionProductoContainer"]/text()').extract_first()
