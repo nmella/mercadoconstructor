@@ -54,13 +54,14 @@ class YolitoSpider(Spider):
 
         # Price rules
         if price < 50:
-            price = price * 0.25
+            price = price * 1.25
         elif 50 <= price < 150:
-            price = price * 0.2
+            price = price * 1.2
         elif 150 <= price < 300:
-            price = price * 0.15
+            price = price * 1.15
         else:
-            price = price * 0.1
+            price = price * 1.1
+        price = int(round(price, 0))
 
         item = {
             'name': name,
